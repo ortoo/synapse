@@ -1,3 +1,7 @@
+def deep_copy(o)
+  Marshal.load(Marshal.dump(o))
+end
+
 module Synapse
   class BaseFetcher
     def initialize(opts={})
@@ -22,7 +26,7 @@ module Synapse
       # If we don't have a discovery method but a default one is passed in the opts then
       # add it
       if (!config.key?('discovery')) and @opts.key?('default_discovery')
-        config['discovery'] = @opts['default_discovery']
+        config['discovery'] = deep_copy(@opts['default_discovery'])
 
         # We may need to replace the service name in the path (if there is a path)
         if config['discovery'].key?('path')
